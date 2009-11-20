@@ -36,7 +36,7 @@ class BankAccountActor extends Actor {
     // check balance
     case Balance(accountNo) =>
       txnLog.add("Balance:" + accountNo)
-      reply(accountState.get(accountNo).get)
+      reply(accountState.get(accountNo).get.asInstanceOf[BigInt])
 
     // debit amount: can fail
     case Debit(accountNo, amount, failer) =>
@@ -58,7 +58,7 @@ class BankAccountActor extends Actor {
       val m: BigInt =
       accountState.get(accountNo) match {
         case None => 0
-        case Some(v) => BigInt(v.asInstanceOf[String])
+        case Some(v) => v.asInstanceOf[BigInt]
       }
       var bal: BigInt = 0
       amounts.foreach {amount =>
